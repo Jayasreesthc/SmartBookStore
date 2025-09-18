@@ -8,7 +8,7 @@ This project provides a platform to browse, purchase, and manage books online wi
 
 👤 User Authentication – Secure login and registration
 
-📖 Book Management – Browse, search, and view book details
+📖 Book Management – Browse, search, and view book details  
 
 🛒 Cart System – Add to cart and place orders
 
