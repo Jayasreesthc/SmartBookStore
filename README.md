@@ -1,7 +1,8 @@
 📚 SmartBookStore System
 
-A full-stack Book Store Management System built using Spring Boot, Thymeleaf, and MySQL.
+A Smart Book Store Management System built using Spring Boot, Thymeleaf, and MySQL.
 This project provides a platform to browse, purchase, and manage books online with both user and admin features.
+
 
 🚀 Features
 
@@ -13,9 +14,19 @@ This project provides a platform to browse, purchase, and manage books online wi
 
 📦 Order Tracking – Track order history and status
 
-👨‍💼 Admin Dashboard – Add, update, and delete books
+👨‍💼 Admin Dashboard – Separate login for admins with username & password
+
+Add, update, and delete books
+
+Manage user orders
 
 📊 Responsive UI – Clean interface with Thymeleaf templates
+
+
+### Default Admin Credentials (for testing)
+- Username: admin  
+- Password: admin123  
+
 
 🛠️ Technologies Used
 
@@ -27,7 +38,9 @@ Database: MySQL
 
 Tools & Build: Maven / Gradle, IntelliJ IDEA
 
+
 📂 Project Structure
+
 smartbookstore/
  ├── src/
  │   ├── main/
@@ -55,7 +68,7 @@ Update application.properties with your DB username & password
 
 spring.datasource.url=jdbc:mysql://localhost:3306/bookstore_db
 spring.datasource.username=root
-spring.datasource.password=yourpassword
+spring.datasource.password=Jsree
 spring.jpa.hibernate.ddl-auto=update
 
 
@@ -75,16 +88,17 @@ Open browser → http://localhost:8080
 
 📸 Screenshots
 
-👉 (Add your project screenshots here)
+👉 (Add in project screenshots folder)
 Example:
 
-Homepage
+### Homepage  
+![Homepage](Screenshots/homepage.png)
 
-Book List
+### Book List  
+![Book List](Screenshots/SBS_User_udashboard_1.png)
 
-Cart Page
-
-Admin Dashboard
+### Admin Dashboard  
+![Admin Dashboard](Screenshots/SBS_admin_dashboard_1.png)
 
 📌 Future Enhancements
 
@@ -95,5 +109,7 @@ Admin Dashboard
 ⭐ User reviews & ratings for books
 
 📜 License
+
+This project is licensed under the MIT License – feel free to use and modify.
 
 This project is licensed under the MIT License – feel free to use and modify.
