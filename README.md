@@ -36,10 +36,11 @@ Frontend: Thymeleaf, HTML, CSS, Bootstrap
 
 Database: MySQL
 
-Tools & Build: Maven / Gradle, IntelliJ IDEA
+Tools & Build: Maven, IntelliJ IDEA
 
 
 📂 Project Structure
+
 
 smartbookstore/
  ├── src/
@@ -49,15 +50,15 @@ smartbookstore/
  │   │   │   ├── static/                   # CSS, JS, images
  │   │   │   ├── templates/                # Thymeleaf templates
  │   │   │   └── application.properties    # DB configuration
- ├── pom.xml / build.gradle                # Dependencies
+ ├── pom.xml                               # Dependencies
  └── README.md
 
 ⚙️ Setup Instructions
 
 Clone the Repository
 
-git clone https://github.com/your-username/smartbookstore.git
-cd smartbookstore
+git clone https://github.com/Jayasreesthc/SmartBookStore.git
+cd SmartBookStore
 
 
 Configure Database
@@ -77,14 +78,9 @@ Run the Application
 mvn spring-boot:run
 
 
-or
-
-gradle bootRun
-
-
 Access the App
 
-Open browser → http://localhost:8080
+Open browser → http://localhost:8081
 
 📸 Screenshots
 
