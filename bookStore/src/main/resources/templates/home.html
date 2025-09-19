@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.com">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap" rel="stylesheet">
+    <link href="https://fonts.google.com/specimen/Story+Script:wght@400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,400;1,700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&family=Story+Script&display=swap" rel="stylesheet">
+    <title>Book Store</title>
+    <style>
+    .img-rounded {
+    border-radius: 15px; /* Rounded corners */
+    border: 2px solid #ccc; /* Optional border */
+    transition: transform 0.3s; /* Smooth hover effect */
+    }
+
+    .img-rounded:hover {
+    transform: scale(1.05); /* Slight zoom on hover */
+    border-color: #00BFFF; /* Change border color on hover */
+    }
+    </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark" style="background-color:#008080;">
+    <div class="container-fluid">
+        <a class="navbar-brand text-white" href="#">Book Store</a>
+        <button class="navbar-toggler text-white" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link active text-white" aria-current="page" href="/">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="#about">About</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="#contact">Contact us</a>
+                </li>
+
+
+            </ul>
+
+            <div>
+                <button class="btn px-3 py-2 text-white"  id="registerDropdown">
+                    <a class="text-white text-decoration-none" href="/register">Register</a>
+                </button>
+            </div>
+                <div class="dropdown">
+                    <button class="btn dropdown-toggle px-4 py-2 text-white" type="button" id="loginDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                        Login
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="loginDropdown">
+                        <li><a class="dropdown-item btn" style="color:#008080;" href="/Login_admin">Admin Login</a></li>
+                        <li><a class="dropdown-item btn" style="color:#008080;" href="/Login_client">User Login</a></li>
+                    </ul>
+                </div>
+
+        </div>
+    </div>
+</nav>
+  <div class="container text-center my-5" >
+      <h1 class="text-center fst-italic" style="font-family: 'Times New Roman', serif; color: #32cd32;">Fluence-Your Online Book Hub</h1>
+      <h6 class="my-5" style="color: #008080; font-family: 'Times New Roman', italic; font-size: 1.5rem;">Discover, explore, and order your favorite books online. From timeless classics to the
+          latest releases, we’ve got it all in one place.BookHub is a simple and user-friendly online bookstore where you can browse thousands of titles across different genres – Fiction, Non-fiction, Science, Technology, Education, and more.
+          Our goal is to make book shopping easier by providing fast search, secure checkout, and doorstep delivery.</h6>
+  </div>
+<div class="container">
+    <div class="row">
+    <div class="col-md-3">
+        <h2 style="color: #063979; font-family: 'Times New Roman', serif; font-weight: normal; letter-spacing: 2px; text-shadow: 1px 1px 2px #888888;">
+            Welcome to BookHub
+        </h2><br>
+        <h4 class="fst-italic" style="font-size: 1.1rem, color: #381d25,font-family: 'Playfair Display', serif; font-style: italic;">
+            New Collection
+        </h4><br>
+        <h4 class="fst-italic" style="color: #2a263c;font-family: 'Times New Roman', sans-serif;">A comprehensive solution designed to simplify the process of managing books and orders.</h4></br>
+        <h4 class="fst-italic" style="color: #1c344a; font-family: 'Times New Roman', serif;">
+            This system allows users to browse a wide variety of books, track inventory, manage customer orders,
+            and maintain a seamless checkout process.</h4><br>
+        <h4 class="fst-italic" style="color: #4a3c1c; font-family: 'Times New Roman', serif;">Place your orders now</h4>
+    </div>
+        <div class="col-md-3" >
+      <img src="/bshp.jpg" width="700px" height="600px">
+        </div>
+        <div class="col-md-3 mx-5">
+            <img src="/order_now.png" alt="BookHub Image 2" width="200px" height="200px">
+        </div>
+
+    </div>
+  </div>
+<br>
+<div class="container my-2">
+    <h4 class="fst-italic fst-bold" style="color: #415971; font-family: 'Times New Roman', serif;">Most Popular Fiction search</h4>
+    <div class="row text-center">
+        <div class="col-md-3 mb-4">
+            <img src="fiction_1.webp" class="img-fluid img-rounded" alt="Image 1"><br>
+            <h5 class="fst-italic" style="color: #547391; font-family: 'Times New Roman', serif;">Harry Potter and the Sorcerer's Stone</h5>
+        </div>
+        <div class="col-md-3 mb-4">
+            <img src="fiction_2.webp" class="img-fluid img-rounded" alt="Image 2"><br>
+            <h5 class="fst-italic" style="color: #547391; font-family: 'Times New Roman', serif;"> Catching Fire</h5>
+        </div>
+        <div class="col-md-3 mb-4">
+            <img src="fiction_3.webp" class="img-fluid img-rounded" alt="Image 3"><br>
+            <h5 class="fst-italic" style="color: #547391; font-family: 'Times New Roman', serif;">Harry Potter and the Chamber of Secrets</h5>
+        </div>
+        <div class="col-md-3 mb-4">
+            <img src="fiction_4.webp" class="img-fluid img-rounded" alt="Image 4"><br>
+            <h5 class="fst-italic" style="color: #547391; font-family: 'Times New Roman', serif;">It Ends with Us</h5>
+        </div>
+    </div>
+</div>
+
+<div class="container my-2">
+    <h4 class="fst-italic fst-bold" style="color: #415971; font-family: 'Times New Roman', serif;">Most Popular Non-Fiction search</h4>
+    <div class="row text-center">
+        <div class="col-md-3 mb-4">
+            <img src="nonfiction_1.jpg" class="img-fluid img-rounded" alt="Image 1"><br>
+            <h5 class="fst-italic" style="color: #547391; font-family: 'Times New Roman', serif;">Uncommon Sense Teaching</h5>
+        </div>
+        <div class="col-md-3 mb-4">
+            <img src="nonfiction_2.jpg" class="img-fluid img-rounded" alt="Image 2"><br>
+            <h5 class="fst-italic" style="color: #547391; font-family: 'Times New Roman', serif;">Overcoming Dyslexia</h5>
+        </div>
+        <div class="col-md-3 mb-4">
+            <img src="nonfiction_3.jpg" class="img-fluid img-rounded" alt="Image 3"><br>
+            <h5 class="fst-italic" style="color: #547391; font-family: 'Times New Roman', serif;">Anti-Racist Educational Leadership and Policy</h5>
+        </div>
+        <div class="col-md-3 mb-4">
+            <img src="nonfiction_4.jpg" class="img-fluid img-rounded" alt="Image 4"><br>
+            <h5 class="fst-italic" style="color: #547391; font-family: 'Times New Roman', serif;">Distance Learning</h5>
+        </div>
+    </div>
+</div>
+
+<a class="fst-italic text-decoration-none" style="color: #547391; font-family: 'Times New Roman', serif;" href="/Login_client"><h4>Explore all Available Books here</h4></a><br>
+<!-- About Section -->
+<section id="about" class="container my-5" >
+    <div class="row">
+        <div class="col-md-12 text-center">
+            <h2 class="fw-bold mb-4" style="color: #2F4F4F; font-family: 'Georgia', serif;">
+                About <h2 class="fst-italic" style="font-family: 'Times New Roman', serif; color: #32cd32;">Fluence</h2>
+            </h2>
+            <p class="text-muted fst-italic" style="font-size: 1.1rem; line-height: 1.8;">
+                <italic>Fluence</italic> is a simple and user-friendly platform
+                designed to streamline the process of managing books, customers, and orders.
+                It allows administrators to add, update, and organize books efficiently,
+                while providing customers with an easy way to browse, search, and purchase their favorite titles.
+                Our system aims to save time, reduce manual work, and deliver a seamless reading experience to book lovers.
+            </p>
+        </div>
+    </div>
+</section>
+
+<!-- Contact Section -->
+<section id="contact" class="py-5 bg-light">
+    <div class="container">
+        <h2 class="text-center mb-4 fw-bold fas fa-comment-dots" style="color:#162812 ;font-family: 'Poppins', sans-serif;">Contact Us</h2>
+        <p class="text-center mb-5" style="color:#535931; font-family: 'Nunito', sans-serif;">
+            Have questions or feedback? We'd love to hear from you.
+        </p>
+
+        <div class="row">
+            <!-- Contact Form -->
+            <div class="col-md-6 mb-4 w-70">
+                <form th:action="@{/contact}" method="post">
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Name</label>
+                        <input type="text" class="form-control" id="name" name="name" placeholder="Your Name" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="email" name="email" placeholder="Your Email" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="mobile" class="form-label">Mobile</label>
+                        <input type="text" class="form-control" id="mobile"  name="mobile" placeholder="Your Mobile No. " pattern="[0-9]{10}"
+                               title="Enter 10 digit mobile number" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="message" class="form-label">Message</label>
+                        <textarea class="form-control" id="message" name="message" rows="5" placeholder="Your Message" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Send Message</button>
+                </form>
+            </div>
+
+        <!-- Contact Info -->
+            <div>
+                <div class="mb-4 text-center">
+                    <h5 class="fw-bold color:#162812">Phone</h5>
+                    <p>+91 9876543210</p>
+                </div>
+                <div class="mb-4 text-center">
+                    <h5 class="fw-bold">Email</h5>
+                    <p>support@Fluencebookhub.com</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
+
+</body>
+</html>
+
+

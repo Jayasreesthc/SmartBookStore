@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Track Order</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <style>
+    body {
+      background: #f8f9fa;
+    }
+    .timeline {
+      position: relative;
+      margin: 20px 0;
+      padding-left: 40px;
+      border-left: 3px solid #dee2e6;
+    }
+    .timeline-step {
+      position: relative;
+      margin-bottom: 30px;
+    }
+    .timeline-step:last-child {
+      margin-bottom: 0;
+    }
+    .timeline-step::before {
+      content: '';
+      position: absolute;
+      left: -22px;
+      top: 0;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: #dee2e6;
+      border: 3px solid white;
+      z-index: 2;
+    }
+    .timeline-step.completed::before {
+      background: #28a745; /* green */
+    }
+    .timeline-line {
+      position: absolute;
+      left: -16px;
+      top: 14px;
+      width: 2px;
+      height: 100%;
+      background: #28a745;
+      z-index: 1;
+    }
+    .step-title {
+      font-weight: bold;
+      font-size: 1rem;
+    }
+    .step-date {
+      font-size: 0.85rem;
+      color: gray;
+    }
+    .card {
+      border-radius: 15px;
+      box-shadow: 0 8px 32px rgba(31, 38, 135, 0.2);
+    }
+  </style>
+</head>
+<body>
+<div class="container py-4">
+
+  <!-- Header -->
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h4 class="text-primary"><i class="fa-solid fa-location-dot"></i> Track Order</h4>
+    <a href="/my_orders" class="btn btn-outline-secondary btn-sm">
+      <i class="fa-solid fa-arrow-left"></i> Back to My Orders
+    </a>
+  </div>
+
+  <!-- Order Info -->
+  <div class="card mb-4 p-3">
+    <div><strong>Order #:</strong> <span th:text="${order.id}"></span></div>
+    <div><strong>Book:</strong> <span th:text="${order.bookName}"></span></div>
+    <div><strong>Isbn:</strong> <span th:text="${order.isbn}"></span></div>
+    <div><strong>Last Updated:</strong> <span th:text="${#temporals.format(order.lastUpdated, 'dd MMM yyyy HH:mm')}"></span></div>
+  </div>
+
+  <!-- Timeline -->
+  <div class="timeline">
+
+    <!-- Pending -->
+    <div class="timeline-step" th:classappend="${order.status == 'PENDING' || order.status != null ? ' completed' : ''}">
+      <div class="timeline-line"></div>
+      <div class="step-title"><i class="fa-regular fa-clock"></i> Pending</div>
+      <div class="step-date" th:if="${order.status == 'PENDING'}">Updated: <span th:text="${#temporals.format(order.lastUpdated, 'dd MMM yyyy HH:mm')}"></span></div>
+    </div>
+
+    <!-- Accepted -->
+    <div class="timeline-step" th:classappend="${order.status == 'ACCEPTED' || order.status == 'PACKED' || order.status == 'SHIPPED' || order.status == 'OUT_FOR_DELIVERY' || order.status == 'DELIVERED' ? ' completed' : ''}">
+      <div class="timeline-line"></div>
+      <div class="step-title"><i class="fa-solid fa-check"></i> Accepted</div>
+    </div>
+
+    <!-- Packed -->
+    <div class="timeline-step" th:classappend="${order.status == 'PACKED' || order.status == 'SHIPPED' || order.status == 'OUT_FOR_DELIVERY' || order.status == 'DELIVERED' ? ' completed' : ''}">
+      <div class="timeline-line"></div>
+      <div class="step-title"><i class="fa-solid fa-box"></i> Packed</div>
+    </div>
+
+    <!-- Shipped -->
+    <div class="timeline-step" th:classappend="${order.status == 'SHIPPED' || order.status == 'OUT_FOR_DELIVERY' || order.status == 'DELIVERED' ? ' completed' : ''}">
+      <div class="timeline-line"></div>
+      <div class="step-title"><i class="fa-solid fa-truck"></i> Shipped</div>
+      <div class="step-date" th:if="${order.status == 'SHIPPED'}">Updated: <span th:text="${#temporals.format(order.lastUpdated, 'dd MMM yyyy HH:mm')}"></span></div>
+    </div>
+
+    <!-- Out for Delivery -->
+    <div class="timeline-step" th:classappend="${order.status == 'OUT_FOR_DELIVERY' || order.status == 'DELIVERED' ? ' completed' : ''}">
+      <div class="timeline-line"></div>
+      <div class="step-title"><i class="fa-solid fa-motorcycle"></i> Out for Delivery</div>
+      <div class="step-date" th:if="${order.status == 'OUT_FOR_DELIVERY'}">Updated: <span th:text="${#temporals.format(order.lastUpdated, 'dd MMM yyyy HH:mm')}"></span></div>
+    </div>
+
+    <!-- Delivered -->
+    <div class="timeline-step" th:classappend="${order.status == 'DELIVERED' ? ' completed' : ''}">
+      <div class="step-title"><i class="fa-solid fa-gift"></i> Delivered</div>
+      <div class="step-date" th:if="${order.status == 'DELIVERED'}">Updated: <span th:text="${#temporals.format(order.lastUpdated, 'dd MMM yyyy HH:mm')}"></span></div>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

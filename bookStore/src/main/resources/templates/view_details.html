@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Book Details</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Lora:ital,wght@1,400&display=swap" rel="stylesheet">
+
+    <style>
+        /* Frosted Glass Navbar */
+        .glass-navbar {
+            backdrop-filter: blur(12px);
+            background: rgba(255, 255, 255, 0.2);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .custom-nav-link {
+        color: #273646 !important; /* your desired color */
+        }
+        .custom-nav-link:hover {
+        color: 2C4849 !important; /* hover text color */
+        background-color: #EBF2FA; /* optional hover background */
+        }
+
+        .book-card {
+            border-radius: 15px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+            padding: 25px;
+        }
+
+        .book-img {
+            max-height: 400px;
+            object-fit: contain;
+            border-radius: 10px;
+        }
+
+        .details h2 {
+            font-family: 'Georgia', serif;
+            font-weight: bold;
+            color: #273646;
+        }
+
+        .details p {
+            font-size: 1.2rem;
+            margin-bottom: 8px;}
+
+         .details p strong {
+         font-family: 'Playfair Display', serif;
+          color: #5c3c77;
+         }
+
+        .details p span {
+         font-family: 'Lora', serif;
+         font-style: italic;
+         color: #7d4f96;
+         }
+
+        /* Scrollable row for all books */
+        .scroll-container {
+            display: flex;
+            overflow-x: auto;
+            gap: 15px;
+            scroll-behavior: smooth;
+        }
+        .scroll-container::-webkit-scrollbar {
+            display: none;
+        }
+        .scroll-btn {
+            cursor: pointer;
+            font-size: 2rem;
+            color: #273646;
+        }
+    </style>
+</head>
+<body class="bg-light">
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg glass-navbar fixed-top shadow-sm">
+    <div class="container">
+        <a class="navbar-brand fw-bold" href="/available_books">📚 Book Details</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item"><a class="nav-link  me-3 custom-nav-link" href="/">Home</a></li>
+                <li class="nav-item"><a class="nav-link  me-3 custom-nav-link" href="/available_cbooks">All Books</a></li>
+                <li class="nav-item"><a class="nav-link  me-3 custom-nav-link" href="/my_books">My Books</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- Search Bar -->
+<div class="container mt-5 pt-5 text-center">
+    <div class="d-flex justify-content-center">
+        <div class="position-relative" style="width: 50%;">
+    <form class="d-flex" action="/search" method="get">
+        <input id="searchBox" class="form-control w-50" type="text" name="query" placeholder="Search for books, authors..." autocomplete="off" required>
+        <button class="btn btn-primary ms-2">Search</button>
+    </form>
+    <div id="suggestions" class="list-group position-absolute" style="left:0; width: 45%; z-index: 1000;"></div>
+    </div>
+    </div>
+</div>
+
+<!-- Book Details -->
+<div class="container mt-5">
+    <div class="row book-card" style="color:#a6a6a6;">
+        <!-- Book Image -->
+        <div class="col-md-4 text-center" style=" color:#595959; background: rgba(255,255,255,0.3);backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);">
+            <img th:src="@{${book.imagePath}}" class="book-img shadow-sm" alt="Book Image">
+        </div>
+
+        <!-- Book Info -->
+        <div class="card-body col-md-4 details">
+            <h3 class="fs-2 text" style="font-family:'Georgia', serif; color:#273646;">
+                <span th:text="${book.name}">Book Name</span>
+            </h3>
+
+            <!-- Author(s) + Publisher line -->
+            <p class="mt-2" style="font-size: 1.1rem; color:#b0514a;font-family:lora,serif;">
+                By: <span th:text="${book.author}">Author Name</span>
+                | Released : <span th:text="${#temporals.format(book.releaseddate, 'dd MMM yyyy')}"></span>
+            </p>
+            <p><strong style="color:#5c3c77";>Author:</strong> <span th:text="${book.author}"></span></p>
+            <p><strong>Price:</strong> ₹<span th:text="${book.price}"></span></p>
+            <p><strong>Isbn:</strong> <span th:text="${book.isbn}"></span></p>
+            <p><strong>Publisher:</strong> <span th:text="${book.publisher}"></span></p>
+            <p><strong>Category:</strong> <span th:text="${book.category}"></span></p>
+            <p><strong>Released Date:</strong> <span th:text="${#temporals.format(book.releaseddate, 'dd MMM yyyy')}"></span></p>
+            <p><strong>Language:</strong> <span th:text="${book.language}"></span></p>
+            <p><strong>No. of Pages:</strong> <span th:text="${book.noofpages}"></span></p>
+            <hr>
+        </div>
+        <div class="col-md-4">
+            <div class="card shadow-sm p-5 justify-content-center text-center w-75" style="background:#fafafa; border-radius:10px;">
+                <a class="btn btn-success w-75 mb-2 justify-content-center"
+                   th:href="@{/myList/{id}(id=${book.id})}">Add to MyBooks</a>
+                <a class="btn btn-warning w-75 mb-2 justify-content-center"
+                   th:href="@{/buy/{id}(id=${book.id})}">Buy Now</a>
+            </div>
+        </div>
+    </div>
+    <div class="card-body details">
+    <p class="mt-3 mx-1"><strong>Description:</strong></p>
+    <p th:text="${book.description}" class="fst-italic text-muted mx-5" style="font-family:'Georgia', serif; color:#273646;"></p>
+    <a href="/available_cbooks" class="btn btn-outline-primary mt-3">⬅ Back to Books</a>
+    </div>
+</div>
+
+<!-- All Books Scroll Row -->
+<div class="container mt-5">
+    <h4 class="fst-italic mb-3" style="color:#47174f;">All Books</h4>
+    <div class="d-flex align-items-center">
+        <span class="scroll-btn me-2 mb-2" onclick="scrollLeft()">&#10094;</span>
+        <div class="scroll-container mb-4">
+            <div th:each="b : ${allbooks}" class="card shadow-sm" style="min-width: 180px;background: rgba(255,255,255,0.6);backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);">
+                <img th:src="@{${b.imagePath}}" class="card-img-top" style="height:200px; object-fit:contain;" alt="Book Image">
+                <div class="card-body p-2 text-center mb-2">
+                    <h6 class="card-title" th:text="${b.name}">Book</h6>
+                    <p class="card-text mb-1"><strong>Author:</strong> <span th:text="${b.author}">Author</span></p>
+                    <p class="card-text mb-2 text-success fw-bold">₹<span th:text="${b.price}">0.00</span></p>
+                    <a th:href="@{/book/{id}(id=${b.id})}" class="btn btn-sm btn-outline-primary">View details</a>
+                </div>
+            </div>
+        </div>
+        <span class="scroll-btn ms-2" onclick="scrollRight()">&#10095;</span>
+    </div>
+</div>
+
+<script>
+    function scrollLeft() {
+        document.querySelector(".scroll-container").scrollBy({ left: -300, behavior: 'smooth' });
+    }
+    function scrollRight() {
+        document.querySelector(".scroll-container").scrollBy({ left: 300, behavior: 'smooth' });
+    }
+
+
+    const searchBox = document.getElementById("searchBox");
+    const suggestions = document.getElementById("suggestions");
+
+    searchBox.addEventListener("input", async () => {
+        let query = searchBox.value;
+        if (query.length < 2) {
+            suggestions.innerHTML = "";
+            return;
+        }
+
+        let response = await fetch(`/autocomplete?query=${query}`);
+        let results = await response.json();
+
+        suggestions.innerHTML = "";
+        results.forEach(book => {
+            let item = document.createElement("a");
+            item.classList.add("list-group-item", "list-group-item-action");
+            item.innerText = book.name + " (" + book.author + ")";
+            item.href = `/book/${book.id}`;  // Redirect to details page
+            suggestions.appendChild(item);
+        });
+    });
+
+    // Clear suggestions when user clicks outside
+    document.addEventListener("click", (e) => {
+        if (!searchBox.contains(e.target)) {
+            suggestions.innerHTML = "";
+        }
+    });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

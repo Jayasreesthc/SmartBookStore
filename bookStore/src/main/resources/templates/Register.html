@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.com">
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <title>User Registration</title>
+  <style>
+        body {
+            background: url('/bg_register.jpg');
+        background-size: cover;
+        font-family: 'Arial', sans-serif;
+        }
+        .register-container {
+            max-width: 500px;
+            margin: 50px auto;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0px 4px 12px rgba(0,0,0,0.2);
+        }
+        .register-container h3 {
+            color: #415971;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 25px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+  <div class="register-container">
+    <h3>📝 User Registration</h3>
+    <div th:if="${message}" class="alert alert-info text-center mt-3">
+      <p th:text="${message}"></p>
+    </div>
+    <div th:if="${param.error}" class="alert alert-warning">
+      <span th:if="${param.error[0] =='notRegistered'}">⚠️ You are not registered. Please register first.</span>
+    </div>
+    <form th:action="@{/register}" th:object="${user}" method="post">
+      <div class="mb-3">
+        <label for="fullname" class="form-label">Full Name</label>
+        <input type="text" class="form-control" id="fullname" name="fullname" th:field="*{fullname}" required>
+      </div>
+
+      <div class="mb-3">
+        <label for="email" class="form-label">Email Address</label>
+        <input type="email" class="form-control" id="email" name="email"  th:field="*{email}" required>
+      </div>
+
+      <div class="mb-3">
+        <label for="username" class="form-label">Username</label>
+        <input type="text" class="form-control" id="username" name="username" th:field="*{username}" required>
+      </div>
+
+      <div class="mb-3">
+        <label for="password" class="form-label">Password</label>
+        <input type="password" class="form-control" id="password" name="password" placeholder="Suggest a strong password" th:field="*{password}" required>
+      </div>
+
+      <div class="mb-3">
+        <label for="confirmPassword" class="form-label">Confirm Password</label>
+        <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" placeholder="Re-enter password" th:field="*{confirmPassword}" required>
+      </div>
+
+      <div class="d-grid text-center">
+        <button type="submit" class="btn btn-primary w-50">Register</button>
+      </div>
+
+
+      <p class="text-center mt-3">
+        Already have an account? <a href="/Login_client">Login here</a>
+      </p>
+    </form>
+  </div>
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

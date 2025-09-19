@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>My Orders</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <style>
+    body { background: #f8f9fa; }
+    .order-card {
+      border-radius: 15px;
+      background: rgba(255, 255, 255, 0.15); /* semi-transparent */
+      box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37); /* soft shadow */
+      backdrop-filter: blur(10px); /* blur effect */
+     -webkit-backdrop-filter: blur(10px); /* for Safari */
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      transition: transform 0.3s;
+    }
+    .order-card:hover { transform: translateY(-6px); }
+
+    /* status border colors */
+    .order-card.status-accepted { border-left-color: #28a745; }
+    .order-card.status-pending  { border-left-color: #0dcaf0; }
+    .order-card.status-packed { border-left-color: #ffc107; }       /* yellow */
+    .order-card.status-shipped { border-left-color: #17a2b8; }     /* teal */
+    .order-card.status-outfordelivery { border-left-color: #6c757d; } /* grey */
+
+    .order-card.status-delivered{ border-left-color: #ffc107; }
+
+    .card-header {
+      background: linear-gradient(90deg, #007bff, #00bfff);
+      color: white;
+      font-weight: 600;
+      border-radius: 15px 15px 0 0;
+    }
+  </style>
+</head>
+<body>
+<div class="container-fluid">
+  <div class="row">
+
+    <!-- SIDEBAR -->
+    <nav class="col-12 col-md-3 col-lg-2 p-0"
+         style="min-height:100vh; background-color:#415971; color:#fff;">
+      <div class="p-3">
+        <h4 style="color:#fff; margin-bottom:2rem; font-style:italic; font-family:'Georgia', serif;">Fluence</h4>
+
+        <ul class="nav nav-pills flex-column">
+          <li class="nav-item">
+            <a href="/available_cbooks" class="nav-link"
+               style="color:white; padding:12px 16px; font-weight:600;">
+              <i class="fas fa-list me-2"></i> Dashboard
+            </a>
+          </li>
+          <li class="nav-item"><a href="/home" class="nav-link" style="color:white; padding:12px 16px;"><i class="fas fa-home me-2"></i>Home</a></li>
+          <li class="nav-item"><a href="/my_books" class="nav-link" style="color:white; padding:12px 16px;"><i class="fas fa-book me-2"></i> My Books</a></li>
+          <li class="nav-item"><a href="/my_orders" class="nav-link active" style="color:white; padding:12px 16px; background-color:#273646;"><i class="fas fa-box me-2"></i> My Orders</a></li>
+          <li class="nav-item"><a href="/profile" class="nav-link" style="color:white; padding:12px 16px;"><i class="fas fa-user me-2"></i> My Profile</a></li>
+          <li class="nav-item"><a href="/pdf-clist" class="nav-link" style="color:white; padding:12px 16px;"><i class="fas fa-file-pdf me-2"></i> Free PDFs</a></li>
+          <li class="nav-item"><a href="/Login_client" class="nav-link" style="color:white; padding:12px 16px;"><i class="fas fa-sign-out-alt me-2"></i> Logout</a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <!-- MAIN CONTENT -->
+    <main class="col-12 col-md-9 col-lg-10 py-4">
+      <div class="container">
+        <h2 class="text-center mb-4 text-primary"><i class="fa-solid fa-box"></i> My Orders</h2>
+
+        <div class="row g-4">
+          <!-- Loop through user orders -->
+          <div class="col-sm-6 col-md-4" th:each="o : ${orders}">
+            <div class="card order-card h-100"
+                 th:classappend="${o.status == 'ACCEPTED'} ? ' status-accepted' :
+                                 (${o.status == 'PENDING'} ? ' status-pending' :
+                                 (${o.status == 'PACKED'} ? ' status-packed' :
+                                 (${o.status == 'SHIPPED'} ? ' status-shipped' :
+                                 (${o.status == 'OUT_FOR_DELIVERY'} ? ' status-outfordelivery' :
+                                 (${o.status == 'DELIVERED'} ? ' status-delivered' : '')))))">
+
+              <div class="card-header">
+                <i class="fa-solid fa-receipt"></i> Order #<span th:text="${o.id}"></span>
+              </div>
+
+              <div class="card-body">
+                <p><strong>📘 Book:</strong> <span th:text="${o.bookName}"></span></p>
+                <p><strong>✍️ Author:</strong> <span th:text="${o.author}"></span></p>
+                <p><strong>💰 Price:</strong> ₹<span th:text="${o.price}"></span></p>
+                <p><strong>🔖 Isbn:</strong> ₹<span th:text="${o.isbn}"></span></p>
+                <p><strong>🔢 Quantity:</strong> <span th:text="${o.quantity}"></span></p>
+                <p><strong>📅 Ordered On:</strong> <span th:text="${o.orderDate}"></span></p>
+                <p><strong>🏠 Address:</strong> <span th:text="${o.address}"></span></p>
+                <p><strong>📞 Phone:</strong> <span th:text="${o.phoneNumber}"></span></p>
+
+                <p><strong>Status:</strong>
+                  <span th:if="${o.status == 'ACCEPTED'}" class="text-success fw-bold">✔ Accepted</span>
+                  <span th:if="${o.status == 'PENDING'}" class="text-info fw-bold">⌛ Pending</span>
+                  <span th:if="${o.status == 'PACKED'}" class="text-warning fw-bold">📦 Packed</span>
+                  <span th:if="${o.status == 'SHIPPED'}" class="text-dark fw-bold">🚚 Shipped</span>
+                  <span th:if="${o.status == 'OUT_FOR_DELIVERY'}" class="text-secondary fw-bold">🚴 Out for Delivery</span>
+                  <span th:if="${o.status == 'DELIVERED'}" class="text-warning fw-bold">📦 Delivered</span>
+                  <span th:if="${o.status == null}" class="text-muted">Not set</span>
+                </p>
+                <div class="mt-3 text-center">
+                  <a th:href="@{'/track-order/' + ${o.id}}" class="btn btn-success btn-sm">
+                    <i class="fa-solid fa-location-dot"></i> Track Order
+                  </a>
+                </div>
+              </div>
+
+            </div>
+          </div>
+          <!-- End order loop -->
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+</body>
+</html>
+
+
+
+
+

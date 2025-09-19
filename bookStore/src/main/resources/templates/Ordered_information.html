@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Orders</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- CSRF meta tags (only added if Spring Security provides _csrf) -->
+  <meta th:if="${_csrf != null}" name="_csrf" th:content="${_csrf.token}"/>
+  <meta th:if="${_csrf != null}" name="_csrf_header" th:content="${_csrf.headerName}"/>
+
+  <style>
+    body {
+      background: linear-gradient(120deg, #f0f4ff, #e0f7fa);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    .order-card {
+      border-radius: 15px;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.12);
+      transition: transform 0.18s ease-in-out, box-shadow 0.18s;
+      border-left: 6px solid transparent;
+    }
+    .order-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 18px 28px rgba(0,0,0,0.14);
+    }
+
+    /* status border colors */
+    .order-card.status-accepted { border-left-color: #28a745; }   /* green */
+    .order-card.status-pending  { border-left-color: #0dcaf0; }   /* info/light blue */
+    .order-card.status-packed { border-left-color: #6c757d; }     /* gray */
+    .order-card.status-shipped { border-left-color: #0d6efd; }    /* blue */
+    .order-card.status-outfordelivery { border-left-color: #fd7e14; } /* orange */
+    .order-card.status-delivered{ border-left-color: #ffc107; }   /* amber/yellow */
+
+    .card-header {
+      background: linear-gradient(90deg, #007bff, #00bfff);
+      color: white;
+      font-weight: 700;
+      border-radius: 15px 15px 0 0;
+    }
+    .label { font-weight: 600; color: #495057; }
+    .status-badge { font-weight: 700; }
+    .temp-msg {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 9999;
+      min-width: 220px;
+    }
+  </style>
+</head>
+<body>
+<div class="container-fluid">
+  <div class="row">
+
+    <!-- SIDEBAR (left column) -->
+    <nav class="col-12 col-md-3 col-lg-2 p-0"
+         style="min-height:100vh; background-color:#415971; color:#fff;">
+      <div class="p-3">
+        <h4 style="color:#fff; margin-bottom:2rem; font-style:italic; font-family:'Georgia', serif;">Fluence</h4>
+
+        <ul class="nav nav-pills flex-column">
+          <li class="nav-item">
+            <a href="/available_books"
+               class="nav-link active"
+               style="color:white; padding:12px 16px; background-color:#273646; font-weight:600;">
+              <i class="fas fa-list me-2"></i> Dashboard
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="/home" class="nav-link" style="color:white; padding:12px 16px;">
+              <i class="fas fa-home me-2"></i>Home
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="/book_register" class="nav-link" style="color:white; padding:12px 16px;">
+              <i class="fas fa-book me-2"></i> New Book Register
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="/orders" class="nav-link" style="color:white; padding:12px 16px;">
+              <i class="fas fa-box-open  me-2"></i> Ordered Information
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="/uploadBooks" class="nav-link" style="color:white; padding:12px 16px;">
+              <i class="fas fa-upload me-2"></i> Upload pdf
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="/pdf-list" class="nav-link" style="color:white; padding:12px 16px;">
+              <i class="fas fa-file-pdf me-2"></i> View PDFs</a>
+          </li>
+          <li class="nav-item">
+            <a href="/admin/contacts" class="nav-link" style="color:white; padding:12px 16px;">
+              <i class="fas fa-comment-dots me-2"></i> Contact Request</a>
+          </li>
+          <li class="nav-item">
+            <a href="/Login_admin" class="nav-link" style="color:white; padding:12px 16px;">
+              <i class="fas fa-sign-out-alt me-2"></i> Logout
+            </a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+    <main class="col-12 col-md-9 col-lg-10 py-4">
+      <div class="container">
+        <h2 class="text-center mb-4 text-primary"><i class="fa-solid fa-box"></i> All Orders</h2>
+
+        <!-- temporary message container -->
+        <div id="temp-messages"></div>
+
+        <div class="row g-4">
+          <!-- Loop through all orders -->
+          <div class="col-sm-6 col-md-4 col-lg-3" th:each="o : ${orders}">
+            <!-- card gets status class initialised from server -->
+            <div class="card order-card h-100"
+                 th:classappend="${o.status == 'ACCEPTED'} ? ' status-accepted' : (${o.status == 'PENDING'} ? ' status-pending' :(${o.status == 'PACKED'} ? ' status-packed' :
+        (${o.status == 'SHIPPED'} ? ' status-shipped' :
+        (${o.status == 'OUT_FOR_DELIVERY'} ? ' status-outfordelivery' : (${o.status == 'DELIVERED'} ? ' status-delivered' : '')))))">
+              <div class="card-header">
+                <i class="fa-solid fa-receipt"></i> Order #<span th:text="${o.id}"></span>
+              </div>
+              <div class="card-body">
+                <p><span class="label">📘 Book:</span> <span th:text="${o.bookName}"></span></p>
+                <p><span class="label">✍️ Author:</span> <span th:text="${o.author}"></span></p>
+                <p><span class="label">💰 Price:</span> ₹<span th:text="${o.price}"></span></p>
+                <p><span class="label">🔖  Isbn:</span> <span th:text="${o.isbn}"></span></p>
+                <p><span class="label">🔢 Quantity:</span> <span th:text="${o.quantity}"></span></p>
+                <p><span class="label">🚚 Delivery Days:</span> <span th:text="${o.deliveryDays}"></span> days</p>
+                <p><span class="label">🏠 Address:</span> <span th:text="${o.address}"></span></p>
+                <p><span class="label">📞 Phone:</span> <span th:text="${o.phoneNumber}"></span></p>
+
+                <p>
+                  <strong>Status:</strong>
+                  <span class="order-status">
+              <span th:if="${o.status == 'ACCEPTED'}" class="text-success status-badge">✔ Accepted</span>
+              <span th:if="${o.status == 'PENDING'}" class="text-info status-badge">⌛ Pending</span>
+                    <span th:if="${o.status == 'PACKED'}" class="text-primary status-badge">🎁 Packed</span>
+              <span th:if="${o.status == 'SHIPPED'}" class="text-dark status-badge">🚚 Shipped</span>
+              <span th:if="${o.status == 'OUT_FOR_DELIVERY'}" class="text-warning status-badge">🚴 Out for Delivery</span>
+              <span th:if="${o.status == 'DELIVERED'}" class="text-warning status-badge" style="color:darkgreen">📦 Delivered</span>
+              <span th:if="${o.status == null}" class="text-muted status-badge">Not set</span>
+            </span>
+                </p>
+
+                <!-- Action Buttons call AJAX function (th:onclick inserts order id) -->
+                <div class="d-flex flex-wrap gap-2">
+                  <button type="button" class="btn btn-success btn-sm"
+                          th:onclick="|updateStatusAjax(${o.id}, 'ACCEPTED', this)|">
+                    <i class="fa-solid fa-check"></i> Accept
+                  </button>
+
+                  <button type="button" class="btn btn-info btn-sm"
+                          th:onclick="|updateStatusAjax(${o.id}, 'PENDING', this)|">
+                    <i class="fa-solid fa-hourglass-half"></i> Pending
+                  </button>
+
+
+                  <button type="button" class="btn btn-secondary btn-sm"
+                          th:onclick="|updateStatusAjax(${o.id}, 'PACKED', this)|">
+                    <i class="fa-solid fa-box"></i> Packed
+                  </button>
+
+                  <button type="button" class="btn btn-primary btn-sm"
+                          th:onclick="|updateStatusAjax(${o.id}, 'SHIPPED', this)|">
+                    <i class="fa-solid fa-truck-fast"></i> Shipped
+                  </button>
+
+                  <button type="button" class="btn btn-warning btn-sm"
+                          th:onclick="|updateStatusAjax(${o.id}, 'OUT_FOR_DELIVERY', this)|">
+                    <i class="fa-solid fa-bicycle"></i> Out for Delivery
+                  </button>
+
+
+
+                  <button type="button" class="btn btn-success btn-sm"
+                          th:onclick="|updateStatusAjax(${o.id}, 'DELIVERED', this)|">
+                    <i class="bi bi-check-circle-fill"></i> Delivered
+                  </button>
+                </div>
+
+              </div>
+            </div>
+          </div>
+          <!-- End order loop -->
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+
+
+<script>
+  // helper to show temp messages (auto-remove)
+  function showTempMessage(msg, type) {
+    const container = document.getElementById('temp-messages');
+    const div = document.createElement('div');
+    div.className = `alert alert-${type} temp-msg`;
+    div.innerHTML = msg;
+    container.appendChild(div);
+    setTimeout(() => {
+      div.remove();
+    }, 3000);
+  }
+
+  // read CSRF meta tags if present (Spring Security)
+  function getCsrf() {
+    const tokenMeta = document.querySelector('meta[name="_csrf"]');
+    const headerMeta = document.querySelector('meta[name="_csrf_header"]');
+    if (!tokenMeta || !headerMeta) return null;
+    return {
+      headerName: headerMeta.getAttribute('content'),
+      token: tokenMeta.getAttribute('content')
+    };
+  }
+
+  // AJAX update function
+  function updateStatusAjax(orderId, status, btn) {
+    const csrf = getCsrf();
+    btn.disabled = true;
+
+    // find card and status container for immediate UI update
+    const card = btn.closest('.card');
+    const statusEl = card.querySelector('.order-status');
+
+    const body = new URLSearchParams();
+    body.append('status', status);
+
+    const headers = {};
+    if (csrf) {
+      headers[csrf.headerName] = csrf.token;
+    }
+
+    // send POST with form-encoded body
+    fetch('/orders/updateStatusAjax/' + orderId, {
+      method: 'POST',
+      headers: {
+        ...headers,
+        'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      body: body.toString()
+    })
+    .then(response => response.json().then(json => ({ ok: response.ok, json })))
+    .then(({ ok, json }) => {
+      if (!ok || !json.success) {
+        showTempMessage(json.message || 'Update failed', 'danger');
+        return;
+      }
+
+      // Update the status text (styled)
+      if (json.status === 'ACCEPTED') {
+        statusEl.innerHTML = '<span class="text-success status-badge">✔ Accepted</span>';
+        card.classList.remove('status-pending','status-delivered');
+        card.classList.add('status-accepted');
+      } else if (json.status === 'PENDING') {
+        statusEl.innerHTML = '<span class="text-info status-badge">⌛ Pending</span>';
+        card.classList.remove('status-accepted','status-delivered');
+        card.classList.add('status-pending');
+      } else if (json.status === 'PACKED') {
+       statusEl.innerHTML = '<span class="text-secondary status-badge">📦 Packed</span>';
+       card.className = 'card order-card status-packed h-100';
+      } else if (json.status === 'SHIPPED') {
+        statusEl.innerHTML = '<span class="text-primary status-badge">🚚 Shipped</span>';
+        card.className = 'card order-card status-shipped h-100';
+      } else if (json.status === 'OUT_FOR_DELIVERY') {
+      statusEl.innerHTML = '<span class="text-warning status-badge">🚛 Out for Delivery</span>';
+      card.className = 'card order-card status-outfordelivery h-100';
+      }else if (json.status === 'DELIVERED') {
+        statusEl.innerHTML = '<span class="status-badge" style="color:darkgreen">📦 Delivered</span>';
+        card.classList.remove('status-accepted','status-pending');
+        card.classList.add('status-delivered');
+      } else {
+        statusEl.innerHTML = '<span class="text-muted status-badge">Not set</span>';
+      }
+
+      // show success message
+      showTempMessage(json.message, 'success');
+    })
+    .catch(err => {
+      console.error(err);
+      showTempMessage('Server error. Try again.', 'danger');
+    })
+    .finally(() => btn.disabled = false);
+  }
+</script>
+
+</body>
+</html>

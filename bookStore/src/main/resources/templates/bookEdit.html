@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+    <title>Book Store</title>
+</head>
+<body>
+<div class="container-fluid">
+    <div class="row">
+
+        <!-- SIDEBAR (left column) -->
+        <nav class="col-12 col-md-3 col-lg-2 p-0"
+             style="min-height:100vh; background-color:#415971; color:#fff;">
+            <div class="p-3">
+                <h4 style="color:#fff; margin-bottom:2rem; font-style:italic; font-family:'Georgia', serif;">Fluence</h4>
+
+                <ul class="nav nav-pills flex-column">
+                    <li class="nav-item">
+                        <a href="/available_books"
+                           class="nav-link active"
+                           style="color:white; padding:12px 16px; background-color:#273646; font-weight:600;">
+                            <i class="fas fa-list me-2"></i> Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/home" class="nav-link" style="color:white; padding:12px 16px;">
+                            <i class="fas fa-home me-2"></i>Home
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/book_register" class="nav-link" style="color:white; padding:12px 16px;">
+                            <i class="fas fa-book me-2"></i> New Book Register
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/uploadBooks" class="nav-link" style="color:white; padding:12px 16px;">
+                            <i class="fas fa-upload me-2"></i> Upload pdf
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/pdf-list" class="nav-link" style="color:white; padding:12px 16px;">
+                            <i class="fas fa-file-pdf me-2"></i> View PDFs</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/admin/contacts" class="nav-link" style="color:white; padding:12px 16px;">
+                            <i class="fas fa-comment-dots me-2"></i> Contact Request</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/Login_admin" class="nav-link" style="color:white; padding:12px 16px;">
+                            <i class="fas fa-sign-out-alt me-2"></i> Logout
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        <main class="col-12 col-md-9 col-lg-10 py-2 d-flex justify-content-center align-items-center"
+              style="background: url('/editbgimage.webp') no-repeat center center; background-size: cover; min-height:100vh;">
+            <div class="container m-5 p-5 aligns-items-center" style="border:2px solid #273646; border-radius:20px; max-width:500px; background: rgba(255,255,255,0.5);">
+                <h4 class="text-center h4 mb-0 fw-bold fst-italic" style="color:#273646; font-family:'Georgia', serif;">
+                    Edit Book</h4>
+                <form th:action="@{/save}" method="post" th:object="${book}" enctype="multipart/form-data">
+                    <input type="hidden" name="id" th:value="${book.id}"/>
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Name</label>
+                        <input type="text" class="form-control" th:field="*{name}" id="name">
+                        <!--            <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>-->
+                    </div>
+                    <div class="mb-3">
+                        <label for="author" class="form-label">Author</label>
+                        <input type="text" class="form-control" th:field="*{author}" id="author">
+                    </div>
+                    <div class="mb-4">
+                        <label for="isbn" class="form-label">ISBN</label>
+                        <input type="text" class="form-control" th:field="*{isbn}" id="isbn">
+                    </div>
+                    <div class="mb-3">
+                        <label for="price" class="form-label">Price</label>
+                        <input type="text" class="form-control" th:field="*{price}" id="price">
+                    </div>
+                    <div class="mb-4">
+                        <label for="quantity" class="form-label">Quantity</label>
+                        <input type="text" class="form-control" th:field="*{quantity}" id="quantity">
+                    </div>
+                    <div class="mb-3">
+                        <label for="imagePath" class="form-label">Book Image</label>
+                        <input type="file" id="imagePath" name="image" class="form-control"  accept="image/*">
+                        <div class="mt-2">
+                            <img th:if="${book.imagePath != null}" th:src="@{${book.imagePath}}"
+                                 alt="Book Image" style="max-height:150px; max-width:150px; object-fit:contain;">
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <label for="publisher" class="form-label">Publisher</label>
+                        <input type="text" class="form-control" th:field="*{publisher}" id="publisher" >
+                    </div>
+                    <div class="mb-4">
+                        <label for="category" class="form-label">Category</label>
+                        <select class="form-control" th:field="*{category}" id="category" >
+                            <option value="Fiction">Fiction</option>
+                            <option value="Non-Fiction">Non-Fiction</option>
+                            <option value="Technology">Technology</option>
+                            <option value="Romance">Romance</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    <div class="mb-4">
+                        <label for="releaseddate" class="form-label">Published Date</label>
+                        <input type="date" class="form-control" th:field="*{releaseddate}" id="releaseddate" >
+                    </div>
+                    <div class="mb-4">
+                        <label for="language" class="form-label">Language</label>
+                        <select class="form-control" th:field="*{language}" id="language" >
+                            <option value="English">English</option>
+                            <option value="Tamil">Tamil</option>
+                            <option value="Hindi">Hindi</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    <div class="mb-4">
+                        <label for="noofpages" class="form-label">No. of Pages</label>
+                        <input type="text" class="form-control" th:field="*{noofpages}" id="noofpages">
+                    </div>
+                    <div class="mb-4">
+                        <label for="description" class="form-label">Description</label>
+                        <textarea class="form-control" th:field="*{description}" id="description"  rows="4"></textarea>
+                    </div>
+                    <center>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </center>
+                </form>
+            </div>
+        </main>
+    </div>
+</div>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
+</body>
+</html>

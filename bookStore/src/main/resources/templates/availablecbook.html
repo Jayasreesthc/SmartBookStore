@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+  <title>Book Store</title>
+  <!--    <script src="https://kit.fontawesome.com/ofaddc1of8.js" crossorigin="anonymous"></script>-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+</head>
+<body>
+<div class="container-fluid">
+  <div class="row">
+
+    <!-- SIDEBAR (left column) -->
+    <nav class="col-12 col-md-3 col-lg-2 p-0"
+         style="min-height:100vh; background-color:#415971; color:#fff;">
+      <div class="p-3">
+        <h4 style="color:#fff; margin-bottom:2rem; font-style:italic; font-family:'Georgia', serif;">Fluence</h4>
+
+        <ul class="nav nav-pills flex-column">
+          <li class="nav-item">
+            <a href="/available_cbooks"
+               class="nav-link active"
+               style="color:white; padding:12px 16px; background-color:#273646; font-weight:600;">
+              <i class="fas fa-list me-2"></i> Dashboard
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="/home" class="nav-link" style="color:white; padding:12px 16px;">
+              <i class="fas fa-home me-2"></i>Home
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="/my_books" class="nav-link" style="color:white; padding:12px 16px;">
+              <i class="fas fa-book me-2"></i> My Books
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="/my_orders" class="nav-link" style="color:white; padding:12px 16px;">
+              <i class="fas fa-box me-2"></i> My Orders
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="/profile" class="nav-link" style="color:white; padding:12px 16px;">
+              <i class="fas fa-user me-2"></i> My Profile
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="/pdf-clist" class="nav-link" style="color:white; padding:12px 16px;">
+              <i class="fas fa-file-pdf me-2"></i> Free PDFs</a>
+          </li>
+          <li class="nav-item">
+            <a href="/Login_admin" class="nav-link" style="color:white; padding:12px 16px;">
+              <i class="fas fa-sign-out-alt me-2"></i> Logout
+            </a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+<!--    https://localbooks.in/book-details/the-habbit-of-winning-->
+    <!-- MAIN CONTENT (right column) -->
+    <main class="col-12 col-md-9 col-lg-10 py-4 d-flex flex-column"
+          style="background: url('/dashboard_admin.jpg') no-repeat center center; background-size: cover; min-height:100vh;">
+<!--      bg-white-->
+      <div class="container-fluid p-4 rounded shadow" style="background: rgba(255,255,255,0.5); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);">
+        <!-- header row: title + add button -->
+        <div class="d-flex justify-content-end align-items-center mb-2">
+          <h4 class="h5 mb-0 fw-bold fst-italic me-3"
+              style="color:#273646; font-family:'Georgia', serif;">
+            Welcome, <span th:text="${client.username}">User</span>
+          </h4>
+          <a href="/profile" class="d-flex justify-content-center align-items-center
+            rounded-circle shadow overflow-hidden"
+             style="width:45px; height:45px; background-color:#e0f7f1; color:#20c997; text-decoration:none;">
+
+            <!-- If user has uploaded profile picture, show it -->
+            <img th:if="${client.profileImage != null}"
+                 th:src="@{${client.profileImage}}"
+                 alt="Profile"
+                 style="width:100%; height:100%; object-fit:cover;">
+
+            <!-- Otherwise show default user icon -->
+            <i th:if="${client.profileImage == null}" class="fa-solid fa-user"></i>
+          </a>
+        </div>
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h3 class="h4 mb-0 fw-bold fst-italic" style="color:#273646; font-family:'Georgia', serif;">Available Books</h3>
+
+          <!--                    <a th:href="@{/category/add}" class="btn" style="background-color:#20c997; color:#fff;">-->
+          <!--                        <i class="fas fa-plus me-2"></i> Add Category-->
+          <!--                    </a>-->
+        </div>
+        <div class="container text-center">
+          <div class="d-flex justify-content-center">
+            <div class="position-relative" style="width: 75%;">
+          <form class="d-flex" action="/search" method="get">
+            <input id="searchBox" class="form-control w-50" type="text" name="query" placeholder="Search for books, authors..." autocomplete="off" required>
+            <button class="btn btn-primary ms-2">Search</button>
+          </form>
+          <div id="suggestions" class="list-group position-absolute" style="top:100% left: 0; width: 45%; z-index: 1000;"></div>
+            </div>
+          </div>
+            </div>
+
+
+        <div class="row mt-5" th:if="${book != null}" >
+          <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4" th:each="b : ${book}" >
+            <div class="card h-100 shadow-sm border-0 rounded-3">
+              <!-- Book Image -->
+              <a th:href="@{/book/{id}(id=${b.id})}">
+              <img th:src="@{${b.imagePath}}" alt="Book Image"
+                   class="card-img-top" style="height:260px; width:100%; object-fit:contain; border-radius:6px 6px 2px 2px; background:#f8f9fa;"></a>
+              <div class="card-body d-flex flex-column">
+                <!-- Book Info -->
+                <h5 class="card-title fw-bold" th:text="${b.name}">Book Name</h5>
+                <p class="card-text mb-1"><strong>Author:</strong> <span th:text="${b.author}">Author</span></p>
+                <p class="card-text mb-2 text-success fw-bold">₹<span th:text="${b.price}">0.00</span></p>
+
+                <!-- Buttons -->
+                <div class="mt-auto">
+                  <a class="btn btn-sm btn-outline-secondary w-70 mb-2" th:href="@{/book/{id}(id=${b.id})}">
+                    <i class="fa-solid fa-eye me-1"></i> View Details
+                  </a>
+                  <a class="btn btn-sm btn-outline-success me-2" th:href="@{/myList/{id}(id=${b.id})}">
+                    <i class="fa fa-bookmark"></i> Add to My Book
+                  </a>
+                  <a class="btn btn-sm btn-outline-primary" th:href="@{/buy/{id}(id=${b.id})}">
+                    <i class="fa fa-shopping-cart"></i> Buy Now
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div><!-- card -->
+
+      </div> <!-- container-fluid -->
+    </main>
+
+  </div> <!-- row -->
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous">
+
+</script>
+<script>
+  const searchBox = document.getElementById("searchBox");
+    const suggestions = document.getElementById("suggestions");
+
+    searchBox.addEventListener("input", async () => {
+        let query = searchBox.value;
+        if (query.length < 2) {
+            suggestions.innerHTML = "";
+            return;
+        }
+
+        let response = await fetch(`/autocomplete?query=${query}`);
+        let results = await response.json();
+
+        suggestions.innerHTML = "";
+        results.forEach(book => {
+            let item = document.createElement("a");
+            item.classList.add("list-group-item", "list-group-item-action");
+            item.innerText = book.name + " (" + book.author + ")";
+            item.href = `/book/${book.id}`;  // Redirect to details page
+            suggestions.appendChild(item);
+        });
+    });
+
+    // Clear suggestions when user clicks outside
+    document.addEventListener("click", (e) => {
+        if (!searchBox.contains(e.target)) {
+            suggestions.innerHTML = "";
+        }
+    });
+
+</script>
+</body>
+</html>

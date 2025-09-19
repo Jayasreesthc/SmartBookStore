@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Contact Requests</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <style>
+    thead.custom-head {
+    background-color: #4a90e2; /* Change color here */
+    color: white; /* Text color */
+    font-family: 'Lora', serif;
+    font-size: 1.1rem;
+    letter-spacing: 0.5px;
+    }
+    tbody td {
+    font-family: 'Lora', serif;
+    }
+    </style>
+</head>
+<body style="background-color: #f8f9fa;">
+
+<div class="container mt-5">
+    <!-- Page Header -->
+    <div class="text-center mb-4">
+        <h2 class="fw-bold fst-italic" style="color:#273646; font-family:'Georgia', serif;">
+            <i class="fas fa-address-book me-2 text-primary"></i> All Contact Requests
+        </h2>
+        <p class="text-muted">Here are the messages submitted by clients</p>
+    </div>
+    <div class="d-flex justify-content-end">
+    <a href="/available_books" class="btn btn-outline-secondary btn-sm mb-5">
+        <i class="fa-solid fa-arrow-left"></i> Back to dashboard
+    </a>
+    </div>
+
+    <!-- Table in a Card -->
+    <div class="card shadow-lg border-0 rounded-3">
+        <div class="card-body p-4">
+            <div class="table-responsive">
+                <table class="table table-hover table-striped align-middle text-center">
+                    <thead class="custom-head">
+                    <tr>
+                        <th><i class="fas fa-hashtag me-1"></i>ID</th>
+                        <th><i class="fas fa-user me-1"></i>Name</th>
+                        <th><i class="fas fa-envelope me-1"></i>Email</th>
+                        <th><i class="fas fa-phone me-1"></i>Mobile</th>
+                        <th><i class="fas fa-comment-dots me-1"></i>Message</th>
+                        <th><i class="fas fa-clock me-1"></i>Received At</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="c : ${contacts}">
+                        <td th:text="${c.id}"></td>
+                        <td th:text="${c.name}"></td>
+                        <td>
+                            <a th:href="'mailto:' + ${c.email}" class="text-decoration-none text-dark">
+                                <i class="fas fa-envelope-open-text text-primary me-1"></i>
+                                <span th:text="${c.email}"></span>
+                            </a>
+                        </td>
+                        <td>
+                            <a th:href="'tel:' + ${c.mobile}" class="text-decoration-none text-dark">
+                                <i class="fas fa-phone-alt text-success me-1"></i>
+                                <span th:text="${c.mobile}"></span>
+                            </a>
+                        </td>
+                        <td th:text="${c.message}"></td>
+                        <td th:text="${#temporals.format(c.createdAt, 'dd-MM-yyyy HH:mm')}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

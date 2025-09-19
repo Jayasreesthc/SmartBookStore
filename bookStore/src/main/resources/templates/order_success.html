@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Order Placed • Fluence</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <!-- Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet" />
+    <!-- Fancy font for brand -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+
+    <style>
+    :root{
+      --brand:#415971;       /* Fluence deep blue */
+      --accent:#20c997;      /* teal accent */
+      --ink:#273646;         /* dark text */
+    }
+    body{
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji", sans-serif;
+      background: radial-gradient(1100px 600px at 10% -10%, #eaf3ff 0, transparent 60%),
+                  radial-gradient(900px 600px at 110% 10%, #e7fff6 0, transparent 60%),
+                  linear-gradient(180deg, #ffffff, #f7f9fb 40%, #f3f7f5 100%);
+      min-height: 100vh;
+    }
+    .brand {
+      font-family: "Playfair Display", serif;
+      letter-spacing: .5px;
+      color: var(--brand);
+    }
+    .success-card{
+      border: 0;
+      border-radius: 22px;
+      overflow: hidden;
+      box-shadow: 0 20px 50px rgba(39,54,70,.12);
+      background: #fff;
+    }
+    .ribbon{
+      background: linear-gradient(90deg, var(--brand), var(--accent));
+      color:#fff;
+    }
+    .ribbon .h1{
+      font-family: "Playfair Display", serif;
+      font-weight: 700;
+    }
+    .badge-soft{
+      background: rgba(32,201,151,.12);
+      color: var(--accent);
+      border: 1px solid rgba(32,201,151,.25);
+    }
+    .feature-tile{
+      border: 1px dashed rgba(39,54,70,.18);
+      border-radius: 16px;
+      padding: 14px 16px;
+      background: #fff;
+      transition: transform .15s ease, box-shadow .15s ease;
+    }
+    .feature-tile:hover{
+      transform: translateY(-2px);
+      box-shadow: 0 10px 26px rgba(39,54,70,.10);
+    }
+    .check-burst{
+      width: 64px; height: 64px;
+      border-radius: 50%;
+      display: grid; place-items: center;
+      background: radial-gradient(circle at 30% 30%, #eafff6 0, #e2fff3 40%, #d9fff0 60%, #caffea 100%);
+      border: 1px solid rgba(32,201,151,.35);
+      color: var(--accent);
+      font-size: 28px;
+      box-shadow: 0 6px 16px rgba(32,201,151,.25);
+    }
+    .cta-btn{
+      border-radius: 999px;
+      padding: 10px 18px;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container py-5 my-3">
+    <div class="row justify-content-center">
+        <div class="col-12 col-lg-10 col-xxl-8">
+
+            <!-- Card -->
+            <div class="card success-card">
+                <!-- Top ribbon -->
+                <div class="ribbon px-4 px-md-5 py-4 text-center">
+                    <div class="d-flex justify-content-center align-items-center gap-3">
+                        <div class="check-burst"><i class="fa-solid fa-check"></i></div>
+                        <div class="text-start">
+                            <div class="small text-white-50 text-uppercase mb-1">Order Status</div>
+                            <h1 class="h3 h1 mb-0">Your order is placed 🎉</h1>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Body -->
+                <div class="p-4 p-md-5">
+                    <!-- Brand + tagline -->
+                    <div class="text-center mb-3">
+                        <h2 class="brand display-6 mb-1">Fluence</h2>
+                        <div class="text-secondary">your online bookstore</div>
+                    </div>
+
+                    <!-- Order meta -->
+                    <div class="d-flex flex-wrap justify-content-center gap-2 my-3">
+              <span class="badge rounded-pill badge-soft">
+                <i class="fa-solid fa-gift me-1"></i> Free Shipping
+              </span>
+                        <span class="badge rounded-pill text-bg-light border">
+                <i class="fa-solid fa-location-dot me-1 text-danger"></i> Branches every 50km
+              </span>
+                        <span class="badge rounded-pill text-bg-light border">
+                <i class="fa-solid fa-book-open me-1 text-primary"></i> Place your orders & enjoy reading
+              </span>
+                    </div>
+
+                    <!-- Success text -->
+                    <div class="text-center mb-4">
+                        <p class="lead mb-1" style="color:var(--ink)">
+                            Thank you for choosing <span class="brand">Fluence</span>!
+                        </p>
+                        <p class="mb-0 text-secondary">
+                            We’re preparing your books with care.We contact you through mobile for address conformation.
+                        </p>
+                        <div class="lead mb-1 mt-1" style="color:var(--ink)" >Cash collected when the book reaches you</div>
+                    </div>
+
+                    <!-- Order details -->
+                    <div class="row g-3 justify-content-center mb-4">
+                        <div class="col-12 col-md-10">
+                            <div class="p-3 rounded-4 border bg-light">
+                                <div class="row g-2 align-items-center">
+                                    <div class="col-12 col-md">
+                                        <div class="small text-secondary">Order ID</div>
+                                        <div class="fw-semibold" th:text="${orderId}">#FL-2025-0001</div>
+                                    </div>
+                                    <div class="col-6 col-md">
+                                        <div class="small text-secondary">Placed On</div>
+                                        <div class="fw-semibold" th:text="${orderDate}">04 Sep 2025</div>
+                                    </div>
+                                    <div class="col-6 col-md">
+                                        <div class="small text-secondary">Total Items</div>
+                                        <div class="fw-semibold" th:text="${itemCount}">3</div>
+                                    </div>
+                                    <div class="col-12 col-md">
+                                        <div class="small text-secondary">Total Amount</div>
+                                        <div class="fw-semibold" th:text="${totalAmount}">₹1,250.00</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Highlights -->
+                    <div class="row g-3 mb-4">
+                        <div class="col-12 col-md-4">
+                            <div class="feature-tile h-100">
+                                <div class="d-flex align-items-start gap-3">
+                                    <i class="fa-solid fa-truck-fast fs-3 text-success"></i>
+                                    <div>
+                                        <div class="fw-semibold">Fast & Free Delivery</div>
+                                        <div class="text-secondary small">Enjoy free shipping on eligible orders across the state.</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-md-4">
+                            <div class="feature-tile h-100">
+                                <div class="d-flex align-items-start gap-3">
+                                    <i class="fa-solid fa-location-dot fs-3 text-danger"></i>
+                                    <div>
+                                        <div class="fw-semibold">Branches Every 50km</div>
+                                        <div class="text-secondary small">Pickup & support at a Fluence branch near you.</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-md-4">
+                            <div class="feature-tile h-100">
+                                <div class="d-flex align-items-start gap-3">
+                                    <i class="fa-solid fa-book-open-reader fs-3 text-primary"></i>
+                                    <div>
+                                        <div class="fw-semibold">Read More, Spend Less</div>
+                                        <div class="text-secondary small">Exclusive deals and free PDFs to keep you turning pages.</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- CTAs -->
+                    <div class="d-flex flex-wrap justify-content-center gap-2">
+                        <a class="btn btn-success cta-btn" href="/my_orders">
+                            <i class="fa-solid fa-location-crosshairs me-1"></i> Track Order
+                        </a>
+                        <a class="btn btn-outline-secondary cta-btn" href="/available_cbooks">
+                            <i class="fa-solid fa-book me-1"></i> Continue Shopping
+                        </a>
+                        <a class="btn btn-outline-primary cta-btn" href="/home">
+                            <i class="fa-solid fa-house me-1"></i> Back to Home
+                        </a>
+                    </div>
+
+                    <!-- Footer line -->
+                    <div class="text-center mt-4 pt-2 small text-secondary">
+                        Need help? Our support is available 24/7 • <a href="/contact" class="link-secondary">Contact us</a>
+                    </div>
+                </div>
+            </div>
+            <!-- /card -->
+
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

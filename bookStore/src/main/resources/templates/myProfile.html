@@ -1,0 +1,129 @@
+<!--profile-->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>My Profile</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+        .profile-container {
+            max-width: 800px;
+            margin: 40px auto;
+            background: #fff;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        .profile-pic {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #ddd;
+        }
+    </style>
+</head>
+<body class="bg-light">
+
+<div class="profile-container">
+  <h2 class="mb-4 text-center">My Profile</h2>
+
+  <!-- Success & Error messages -->
+  <div th:if="${successMsg}" class="alert alert-success">[[${successMsg}]]</div>
+  <div th:if="${errorMsg}" class="alert alert-danger">[[${errorMsg}]]</div>
+
+  <!-- Profile update form -->
+  <!-- Profile picture -->
+  <div class="text-center mb-4">
+    <img id="profilePicPreview"
+         th:src="${user.profilePic != null} ? @{/uploads/{file}(file=${user.profilePic})} : @{/images/default-user.png}"
+         alt="Profile Picture"
+         class="profile-pic " width="120" height="120">
+
+    <div class="mt-3">
+      <input type="file" id="profilePicFile" class="form-control" accept="image/*">
+      <button class="btn btn-primary mt-2" type="button" onclick="uploadProfilePic()">Upload Picture</button>
+    </div>
+  </div>
+
+  <form th:action="@{/profile/update}" th:object="${user}" method="post">
+    <div class="row mb-3">
+      <div class="col-md-6">
+        <label class="form-label">Username</label>
+        <input type="text" th:field="*{username}" class="form-control" readonly>
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">Email</label>
+        <input type="email" th:field="*{email}" class="form-control">
+      </div>
+    </div>
+
+    <div class="row mb-3">
+      <div class="col-md-6">
+        <label class="form-label">Mobile</label>
+        <input type="text" th:field="*{mobile}" class="form-control">
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">Birthday</label>
+        <input type="date" th:field="*{bday}" class="form-control">
+      </div>
+    </div>
+
+    <button type="submit" class="btn btn-success w-50 justify-content-center">Update Profile</button>
+  </form>
+
+  <hr class="my-4">
+
+  <!-- Change password form -->
+  <h4>Change Password</h4>
+  <form th:action="@{/profile/changePassword}" method="post">
+    <div class="mb-3 w-50">
+      <label class="form-label">Old Password</label>
+      <input type="password" name="oldPassword" class="form-control" required>
+    </div>
+    <div class="mb-3 w-50">
+      <label class="form-label">New Password</label>
+      <input type="password" name="newPassword" class="form-control" required>
+    </div>
+    <div class="mb-3 w-50">
+      <label class="form-label">Confirm Password</label>
+      <input type="password" name="confirmPassword" class="form-control" required>
+    </div>
+    <button type="submit" class="btn btn-warning w-40 justify-content-center">Change Password</button>
+  </form>
+</div>
+
+<script>
+function uploadProfilePic() {
+    let fileInput = document.getElementById("profilePicFile");
+    if (!fileInput.files.length) {
+        alert("Please choose a file first.");
+        return;
+    }
+
+    let formData = new FormData();
+    formData.append("profilePicFile", fileInput.files[0]);
+
+    fetch("/profile/uploadProfilePic", {
+        method: "POST",
+        body: formData
+    })
+    .then(res => res.text())
+    .then(path => {
+        if (path.startsWith("/uploads/")) {
+            let img = document.getElementById("profilePicPreview");
+            img.src = path;   // ✅ updates the existing <img>
+            alert("Profile picture updated!");
+        } else {
+            alert("Error: " + path);
+        }
+    })
+    .catch(err => {
+        alert("Upload failed: " + err);
+    });
+}
+
+</script>
+
+</body>
+</html>

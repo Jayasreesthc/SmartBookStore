@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Book Not Found</title>
+    <!-- Bootstrap CSS for styling -->
+    <link th:href="@{/webjars/bootstrap/5.3.2/css/bootstrap.min.css}" rel="stylesheet"/>
+    <!-- Optional: Font Awesome for icons -->
+    <link th:href="@{/webjars/font-awesome/6.4.2/css/all.min.css}" rel="stylesheet"/>
+    <style>
+        body {
+            background-color:#e1e2d0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-family: 'Arial', sans-serif;
+        }
+        .error-container {
+            text-align: center;
+            background: #dfe0d2;
+            padding: 50px;
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        }
+        .error-container h1 {
+            font-size: 4rem;
+            color: #dc3545;
+            margin-bottom: 20px;
+        }
+        .error-container p {
+            font-size: 1.2rem;
+            color: #6c757d;
+        }
+        .error-container a {
+            margin-top: 10px;
+            display: inline-block;
+            text-decoration: none;
+        }
+        .btn-custom {
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px 25px;
+            border-radius: 8px;
+            transition: 0.3s;
+        }
+        .btn-custom:hover {
+            background-color: #0056b3;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+<div class="error-container">
+    <h1><i class="fa-solid fa-book-medical"></i> Oops!</h1>
+    <p th:text="${errorMessage}">The book you are looking for is not available.</p>
+    <p style="font-family:'Georgia', serif;">It is out of stock.</p>
+    <p>Feel free to search for other books in our collection.</p>
+    <a th:href="@{/my_books}" class="btn btn-custom"><i class="fa-solid fa-magnifying-glass"></i> Browse Books</a>
+</div>
+</body>
+</html>
